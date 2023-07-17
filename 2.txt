@@ -1,0 +1,42 @@
+an EC2 instance within AWS and obtain the output in JSON format, you can use the AWS CLI (Command Line Interface) or SDKs (Software Development Kits) provided by AWS. I'll provide an example using Python and the AWS SDK for Python (Boto3).
+
+First, make sure you have the Boto3 library installed. You can install it using pip:
+
+pip install boto3
+
+Then, you can use the following code to query the metadata and print the output in JSON format:
+import boto3
+import json
+
+def get_instance_metadata():
+    # Create a session using your AWS credentials
+    session = boto3.Session()
+
+    # Create an EC2 client
+    ec2_client = session.client('ec2')
+
+    # Get the instance ID from the EC2 metadata
+    response = ec2_client.describe_instances()
+    instance_id = response['Reservations'][0]['Instances'][0]['InstanceId']
+
+    # Get the metadata of the instance
+    response = ec2_client.describe_instances(InstanceIds=[instance_id])
+
+    # Extract the metadata details
+    instance_metadata = response['Reservations'][0]['Instances'][0]
+
+    # Print the metadata in JSON format
+    print(json.dumps(instance_metadata, indent=4))
+
+# Call the function to get and print the instance metadata
+get_instance_metadata()
+
+This code will retrieve the metadata of the current EC2 instance, including information such as instance ID, instance type, security groups, tags, and more. The json.dumps() function is used to format the metadata dictionary as a JSON string with proper indentation.
+
+Make sure your code is running within an EC2 instance and has appropriate IAM credentials configured to access EC2 metadata.
+
+Note that if you prefer to use the AWS CLI instead of writing code, you can simply run the following command within the EC2 instance:
+
+curl http://169.254.169.254/latest/dynamic/instance-identity/document
+
+This will retrieve the metadata in JSON format directly from the EC2 instance metadata endpoint.
