@@ -1,0 +1,25 @@
+implementation of a function that takes a nested object and a key and returns the corresponding value:
+
+def get_value_from_nested_object(obj, key):
+    keys = key.split('/')
+    for k in keys:
+        if isinstance(obj, dict) and k in obj:
+            obj = obj[k]
+        else:
+            return None
+    return obj
+
+
+You can use this function by passing your nested object and the desired key as arguments. It will return the value associated with that key in the object, or None if the key is not found. Here's how you can use it with your example inputs:
+
+object1 = {"a":{"b":{"c":"d"}}}
+key1 = "a/b/c"
+value1 = get_value_from_nested_object(object1, key1)
+print(value1)  # Output: d
+
+object2 = {"x":{"y":{"z":"a"}}}
+key2 = "x/y/z"
+value2 = get_value_from_nested_object(object2, key2)
+print(value2)  # Output: a
+
+The function splits the key by the delimiter "/" and iterates through each key segment, checking if it exists in the current nested object. If the key segment exists, it updates the object reference to the corresponding nested object. If any key segment is not found or if the current object is not a dictionary, it returns None. Finally, when it reaches the last key segment, it returns the corresponding value.
